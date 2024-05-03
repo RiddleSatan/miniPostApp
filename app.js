@@ -72,7 +72,7 @@ app.post("/login", async (req, res) => {
 
 app.get("/profile", isLoggedIn, async (req, res) => {
   let data = await userModel.findOne({ _id: req.data.userId }).populate('posts');
-  console.log(data.posts)
+  console.log(data._id)
   res.render("profile", { data });
 });
 
