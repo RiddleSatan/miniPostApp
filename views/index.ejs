@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheet/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Blogs</title>
+</head>
+<body>
+ <div class="main w-full min-h-screen bg-zinc-900 p-10">
+    <a class="text-blue-500 inline-block mb-4" href="/login">Login</a>
+
+    <h1 class="text-orange-500 mb-2">Create account</h1>
+    <form class="text-white" action="/register" method="post">
+        <input class="rounded-md bg-zinc-800 p-2 outline-none " type="text" placeholder="name" name="name">
+        <input class="rounded-md bg-zinc-800 p-2 outline-none " type="text" placeholder="username" name="username">
+        <input class="rounded-md bg-zinc-800 p-2 outline-none " type="number" placeholder="age" name="age">
+        <input class="rounded-md bg-zinc-800 p-2 outline-none " type="email" placeholder="email" name="email">
+        <input class="rounded-md bg-zinc-800 p-2 outline-none " type="password" placeholder="password" name="password">
+        <input class="rounded-md bg-yellow-500 p-2 outline-none text-black" type="submit" value="register">
+    </form>
+ </div>
+    <script src="../public/javascripts/index.js"></script>
+</body>
+</html>

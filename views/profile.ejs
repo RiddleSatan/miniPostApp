@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheet/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Blogs</title>
+</head>
+<body>
+ <div class="main w-full min-h-screen bg-zinc-900 p-10">
+    <h1 class="text-2xl text-white mb-4 mx-auto">This is  your Profile</h1>
+
+    <h1 class="text-orange-500 mb-2">welcome <%=data.username%> how u doin</h1>
+    <form action="/logout" method="post">
+        <input class="p-2 bg-red-500 text-white rounded-md" type="submit" value="Logout">
+    </form>
+   
+ </div>
+    <script src="../public/javascripts/index.js"></script>
+</body>
+</html>
