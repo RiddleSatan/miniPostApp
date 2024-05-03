@@ -5,6 +5,7 @@ import userModel from "./models/user.js";
 import postModel from "./models/post.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import post from "./models/post.js";
 
 const app = express();
 
@@ -63,14 +64,15 @@ app.post("/login", async (req, res) => {
           "randomSecretKey"
         );
         res.cookie("token", token);
-        return res.status(200).redirect('/profile');
+        return res.status(200).redirect("/profile");
       }
     });
   }
 });
 
 app.get("/profile", isLoggedIn, async (req, res) => {
-  let data = await userModel.findOne({ _id: req.data.userId });
+  let data = await userModel.findOne({ _id: req.data.userId }).populate('posts');
+  console.log(data.posts)
   res.render("profile", { data });
 });
 
@@ -81,27 +83,38 @@ app.post("/logout", (req, res) => {
 
 function isLoggedIn(req, res, next) {
   if (!req.cookies.token) {
-    return res.redirect('/login')
+    return res.redirect("/login");
   } else {
     jwt.verify(req.cookies.token, "randomSecretKey", (err, decoded) => {
       req.data = decoded;
-        
+
       next();
     });
   }
 }
 function twiceloggin(req, res, next) {
   if (!req.cookies.token) {
-    next()
-    return 
+    next();
+    return;
   } else {
     jwt.verify(req.cookies.token, "randomSecretKey", (err, decoded) => {
       req.data = decoded;
-        
-      res.redirect('/profile')
+
+      res.redirect("/profile");
     });
   }
 }
 
+  app.post('/post/:id',isLoggedIn,async (req,res)=>{
+    const {post}=req.body
+    // console.log(req.params.id)
+    const user= await userModel.findOne({_id:req.params.id})
+    // console.log()
+    let newPost=await postModel.create({userId:req.params.id,postData:post})
+    user.posts.push(newPost._id)
+    await user.save();
+    res.redirect('/profile')
+    // res.send(post)
+  })
 
 app.listen(3000);
