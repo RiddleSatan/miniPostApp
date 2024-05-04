@@ -71,8 +71,10 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/profile", isLoggedIn, async (req, res) => {
-  let data = await userModel.findOne({ _id: req.data.userId }).populate('posts');
-  console.log(data._id)
+  let data = await userModel
+    .findOne({ _id: req.data.userId })
+    .populate("posts");
+  console.log(data._id);
   res.render("profile", { data });
 });
 
@@ -105,16 +107,19 @@ function twiceloggin(req, res, next) {
   }
 }
 
-  app.post('/post/:id',isLoggedIn,async (req,res)=>{
-    const {post}=req.body
-    // console.log(req.params.id)
-    const user= await userModel.findOne({_id:req.params.id})
-    // console.log()
-    let newPost=await postModel.create({userId:req.params.id,postData:post})
-    user.posts.push(newPost._id)
-    await user.save();
-    res.redirect('/profile')
-    // res.send(post)
-  })
+app.post("/post/:id", isLoggedIn, async (req, res) => {
+  const { post } = req.body;
+  // console.log(req.params.id)
+  const user = await userModel.findOne({ _id: req.params.id });
+  // console.log()
+  let newPost = await postModel.create({
+    userId: req.params.id,
+    postData: post,
+  });
+  user.posts.push(newPost._id);
+  await user.save();
+  res.redirect("/profile");
+  // res.send(post)
+});
 
 app.listen(3000);
