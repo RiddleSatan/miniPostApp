@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheet/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="main w-full h-screen bg-zinc-900 p-10">
+        <a class="mb-8 inline-block text-yellow-500" href="/profile">Go to profile</a>
+        <h1 class="text-white mb-2 size-bold">Edit Post</h1>
+        <form class="" action="/edit/<%=post._id%>" method="post">
+              <textarea class="w-1/4 h-40 p-2 outline-none rounded-md bg-zinc-700 text-white block resize-none" type="text" name="newPostData"><%=post.postData%></textarea>
+              <input class=" p-2 h outline-none mt-2 rounded-md bg-yellow-500 text-black" type="submit" value="Update Post">
+        </form>
+    </div>
+    <script src="/javascripts/script.js"></script>
+</body>
+</html>
