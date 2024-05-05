@@ -70,6 +70,28 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/like/:id", isLoggedIn, async (req, res) => {
+  let post = await postModel.findOne({ _id: req.params.id }).populate("userId"); //populate expands that particular field that has been passed
+  if (post.likes.indexOf(req.data.userId) === -1) {
+    post.likes.push(req.data.userId);
+  } else {
+    post.likes.splice(post.likes.indexOf(req.data.userId));
+  }
+
+  console.log(req.data);
+  // another way to check the likes and unlikes or remove userId from likes or add userid when liked
+  // const likedByUser=post.likes.include(res.data.userId)
+  // if (!likedByUser){
+  //   post.likes.push(res.data.userId)
+  // }else{
+  //   post.likes.filter(id=>id!=res.data.userId)
+  // }
+
+  await post.save();
+  // console.log(req.data)
+  res.redirect("/profile");
+});
+
 app.get("/profile", isLoggedIn, async (req, res) => {
   let data = await userModel
     .findOne({ _id: req.data.userId })
@@ -82,30 +104,6 @@ app.post("/logout", (req, res) => {
   res.cookie("token", "");
   res.redirect("/login");
 });
-
-function isLoggedIn(req, res, next) {
-  if (!req.cookies.token) {
-    return res.redirect("/login");
-  } else {
-    jwt.verify(req.cookies.token, "randomSecretKey", (err, decoded) => {
-      req.data = decoded;
-
-      next();
-    });
-  }
-}
-function twiceloggin(req, res, next) {
-  if (!req.cookies.token) {
-    next();
-    return;
-  } else {
-    jwt.verify(req.cookies.token, "randomSecretKey", (err, decoded) => {
-      req.data = decoded;
-
-      res.redirect("/profile");
-    });
-  }
-}
 
 app.post("/post/:id", isLoggedIn, async (req, res) => {
   const { post } = req.body;
@@ -121,5 +119,30 @@ app.post("/post/:id", isLoggedIn, async (req, res) => {
   res.redirect("/profile");
   // res.send(post)
 });
+
+function isLoggedIn(req, res, next) {
+  if (!req.cookies.token) {
+    return res.redirect("/login");
+  } else {
+    jwt.verify(req.cookies.token, "randomSecretKey", (err, decoded) => {
+      req.data = decoded;
+
+      next();
+    });
+  }
+}
+
+function twiceloggin(req, res, next) {
+  if (!req.cookies.token) {
+    next();
+    return;
+  } else {
+    jwt.verify(req.cookies.token, "randomSecretKey", (err, decoded) => {
+      req.data = decoded;
+
+      res.redirect("/profile");
+    });
+  }
+}
 
 app.listen(3000);
