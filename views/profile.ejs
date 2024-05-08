@@ -10,7 +10,13 @@
   <body>
     <div class="main w-full min-h-screen bg-zinc-900 p-10">
       <div class="w-full flex justify-between">
-        <h1 class="text-2xl text-white mb-4">This is your Profile</h1>
+        <div class="flex gap-3">
+          <div class="w-9 h-10  rounded overflow-hidden">
+            <img class="w-full h-full object-cover " src="./images/<%=data.profilepic%>" alt="">
+          </div>
+
+          <h1 class="text-2xl text-white mb-4">This is your Profile</h1>
+        </div>
         <form action="/logout" method="post">
           <input
             class="p-2 bg-red-500 text-white rounded-md"
@@ -55,15 +61,11 @@
             ><%=post.likes.length%> likes</small
           >
           <div class="mt-2 flex gap-4">
-            
             <a class="text-blue-500" href="/like/<%= post._id %>">
-              <% if (post.likes.includes(data._id)) { %>
-                unlike
-              <% } else { %>
-                like
-              <% } %>
+              <% if (post.likes.includes(data._id)) { %> unlike <% } else { %>
+              like <% } %>
             </a>
-            
+
             <a class="text-zinc-500" href="/edit/<%=post._id%>">edit</a>
           </div>
         </div>

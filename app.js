@@ -6,6 +6,7 @@ import postModel from "./models/post.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import post from "./models/post.js";
+import multerconfig from './config/multerconfig.js'
 
 const app = express();
 
