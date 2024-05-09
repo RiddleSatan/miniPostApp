@@ -143,7 +143,6 @@ function isLoggedIn(req, res, next) {
   } else {
     jwt.verify(req.cookies.token, "randomSecretKey", (err, decoded) => {
       req.data = decoded;
-      email
       next();
     });
   }
@@ -169,9 +168,9 @@ app.post(
   "/upload",
   isLoggedIn,
   multerconfig.single("image"),
-  (req, res) => {
-    // const user = await userModel.findOne({ email: req.user.email });
-    console.log(res)
+  async (req, res) => {
+    const user = await userModel.findOne({ email: req.data.email });
+    
   }
 );
 
