@@ -143,7 +143,7 @@ function isLoggedIn(req, res, next) {
   } else {
     jwt.verify(req.cookies.token, "randomSecretKey", (err, decoded) => {
       req.data = decoded;
-
+      email
       next();
     });
   }
@@ -164,15 +164,15 @@ function twiceloggin(req, res, next) {
 app.get("/upload", (req, res) => {
   res.render("upload");
 });
-
+ 
 app.post(
   "/upload",
   isLoggedIn,
   multerconfig.single("image"),
-  async (req, res) => {
-    const user = await userModel.findOne({ email: req.user.email });
-    console.log(req.file);
+  (req, res) => {
+    // const user = await userModel.findOne({ email: req.user.email });
+    console.log(res)
   }
 );
 
-app.listen(3000);
+app.listen(3000); 
