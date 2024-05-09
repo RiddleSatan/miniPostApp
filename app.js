@@ -5,8 +5,7 @@ import userModel from "./models/user.js";
 import postModel from "./models/post.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import post from "./models/post.js";
-import multerconfig from './config/multerconfig.js'
+import multerconfig from "./config/multerconfig.js";
 
 const app = express();
 
@@ -121,23 +120,26 @@ app.post("/post/:id", isLoggedIn, async (req, res) => {
   // res.send(post)
 });
 
-app.get('/edit/:id',async (req,res)=>{
-  const {id}=req.params
-  const post=await postModel.findOne({_id:id})
-  console.log(post)
-  res.render('edit',{post})
-})
+app.get("/edit/:id", async (req, res) => {
+  const { id } = req.params;
+  const post = await postModel.findOne({ _id: id });
+  console.log(post);
+  res.render("edit", { post });
+});
 
-app.post('/edit/:id',isLoggedIn,async (req,res)=>{
+app.post("/edit/:id", isLoggedIn, async (req, res) => {
   // console.log(req.body.newPostData)
-  // res.send(req.params.id) 
-  let postData=await postModel.findOneAndUpdate({_id:req.params.id},{postData:req.body.newPostData})
-  res.redirect('/profile')
-})
+  // res.send(req.params.id)
+  let postData = await postModel.findOneAndUpdate(
+    { _id: req.params.id },
+    { postData: req.body.newPostData }
+  );
+  res.redirect("/profile");
+});
 
 function isLoggedIn(req, res, next) {
   if (!req.cookies.token) {
-    return res.redirect("/login"); 
+    return res.redirect("/login");
   } else {
     jwt.verify(req.cookies.token, "randomSecretKey", (err, decoded) => {
       req.data = decoded;
@@ -146,8 +148,6 @@ function isLoggedIn(req, res, next) {
     });
   }
 }
-
-
 
 function twiceloggin(req, res, next) {
   if (!req.cookies.token) {
@@ -161,5 +161,18 @@ function twiceloggin(req, res, next) {
     });
   }
 }
+app.get("/upload", (req, res) => {
+  res.render("upload");
+});
+
+app.post(
+  "/upload",
+  isLoggedIn,
+  multerconfig.single("image"),
+  async (req, res) => {
+    const user = await userModel.findOne({ email: req.user.email });
+    console.log(req.file);
+  }
+);
 
 app.listen(3000);
